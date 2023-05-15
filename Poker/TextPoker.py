@@ -12,7 +12,6 @@ class Dealer():
         if roundNum == 2:
             for i in range(3):
                 randInt = random.randrange(0, len(cards))
-                print(randInt)
                 self.hand.append(cards[randInt])
                 cards.pop(randInt)
         elif roundNum > 2 and roundNum != 5:
@@ -101,40 +100,37 @@ os.system("cls")
 roundNum = 1
 pot = 0
 ## gameloop
-while roundNum < 5:
-    dealer.drawHand(cards, roundNum)
+while len(plrs) > 0:
+    while roundNum < 5:
+        dealer.drawHand(cards, roundNum)
+        for plr in plrs:
+            if roundNum == 1:
+                plr.drawHand(cards)
+            elif roundNum > 1:
+                print("Community Hand:",', '.join([str(str(card.Number) + " of " +card.Set) for card in dealer.hand]))
+                print("Player Hand:",', '.join([str(str(card.Number) + " of " +card.Set) for card in plr.plrHand]))
+            print("Pot: " + str(pot))
+            print(plr.name+": "+str(plr.cash))
+            plrBet = int(input("Enter bet amount: "))
+            if plr.bet(plrBet) == False:
+                print("CHEATER. "+plr.name+" ELIMINATED.")
+                plrs.remove(plr)
+                time.sleep(1)
+            else:
+                pot = pot + plrBet
+            os.system("cls")
+        roundNum = roundNum + 1
+    plrHands = {}
     for plr in plrs:
-        if roundNum == 1:
-            plr.drawHand(cards)
-        elif roundNum > 1:
-            print("Community Hand:",', '.join([str(str(card.Number) + " of " +card.Set) for card in dealer.hand]))
-            print("Player Hand:",', '.join([str(str(card.Number) + " of " +card.Set) for card in plr.plrHand]))
-        print("Pot: " + str(pot))
-        print(plr.name+": "+str(plr.cash))
-        plrBet = int(input("Enter bet amount: "))
-        if plr.bet(plrBet) == False:
-            print("CHEATER. "+plr.name+" ELIMINATED.")
-            plrs.remove(plr)
-            time.sleep(1)
-        else:
-            pot = pot + plrBet
-        os.system("cls")
-    roundNum = roundNum + 1
-plrHands = {}
-for plr in plrs:
-   ## for card in plr.plrHand:
-   ##    card = card.split(" ", 1)[0]
-    plrHands[plr.name] = plr.plrHand
-print(plrHands)
-winner = PokerLogic.pokerMain(plrHands, dealer.hand)
-print(winner + " WON!")
-for plr in plrs:
-    if plr.name == winner:
-        actualWinner = plr
-plr.cash += pot
-print(plr.cash)
-pot = 0
-            
+        plrHands[plr.name] = plr.plrHand
+    results = PokerLogic.pokerMain(plrHands, dealer.hand)
+    winner = results[0]
+    for plr in plrs:
+        if plr.name == winner:
+            actualWinner = plr
+    plr.cash += pot
+    pot = 0
+    input(plr.name + " won via: "+results[1]+". Their cash is now: "+str(plr.cash))            
                   
         
         
