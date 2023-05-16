@@ -1,13 +1,14 @@
 def winningPlay(num):
-    if num < 14:
+    print(num)
+    if num < 100:
         return "High Card"
-    if num < 27 and num > 13:
+    if num < 200 and num > 100:
         return "Pair"
-    if num < 40 and num > 26:
+    if num < 300  and num > 200:
         return "Two Pair"
-    if num < 53 and num > 39:
+    if num < 400 and num > 300:
         return "3 Of A Kind"
-    if num < 66 and num > 52:
+    if num < 500 and num > 400:
         return "Full House"
 
 
@@ -16,8 +17,7 @@ def addHighCard(hand):
     nummedHand = []
     for card in hand:
         nummedHand.append(card.Number)
-    print(max(nummedHand))
-    return max(nummedHand)
+    return int(max(nummedHand))
 
 
 def checkDouble(hand, communityHand):
@@ -34,21 +34,17 @@ def checkDouble(hand, communityHand):
     threeKind = []
     for key, value in countedItems.items():
         if value == 2:
-            pairs.append(key)
+            pairs.append(int(key))
         if value == 3:
-            threeKind.append(key)
+            threeKind.append(int(key))
     if threeKind and pairs:
-        print(threeKind, pairs)
-        return int((sum(pairs)) + int(threeKind[0]) + 52)
+        return (pairs[0] + threeKind[0] + 400)
     if threeKind:
-        print(threeKind)
-        return int(threeKind[0]) + 39
+        return (threeKind[0] + 300)
     if len(pairs) == 2:
-        print(pairs)
-        return int((sum(pairs)) + 26)
+        return (sum(pairs) + 200)
     if len(pairs) == 1:
-        print(pairs)
-        return int((pairs[0]) + 13)
+        return (pairs[0] + 100)
     if not pairs and not threeKind:
         return 0
         
@@ -57,11 +53,16 @@ def pokerMain(hands, communityHand):
     for key, hand in hands.items():
         runningTotal = 0
         valueToAdd = checkDouble(hand, communityHand)
+        print(key)
         runningTotal += valueToAdd
-        valueToAdd = addHighCard(hand)
-        runningTotal += valueToAdd
+        if runningTotal == 0:
+            valueToAdd = addHighCard(hand)
+            runningTotal += valueToAdd
         hands[key] = runningTotal
-    winnerKey = max(hands.items())
-    return(winnerKey, winningPlay(hands[winnerKey]))
+    winnerKey = max(hands)
+    print(winnerKey)
+    winReason = winningPlay(hands[winnerKey])
+    print(winReason)
+    return(winnerKey, winReason)
     
         

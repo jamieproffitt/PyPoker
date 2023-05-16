@@ -131,9 +131,9 @@ while len(plrs) > 0:
     for plr in plrs:
         if plr.name == winner:
             actualWinner = plr
-    plr.cash += pot
+    actualWinner.cash += pot
     pot = 0
-    input(plr.name + " won via: "+results[1]+". Their cash is now: "+str(plr.cash))            
+    input(actualWinner.name + " won via: "+results[1]+". Their cash is now: "+str(actualWinner.cash))            
     roundNum = 1
     for plr in plrs:
         plr.plrHand.clear()
