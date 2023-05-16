@@ -48,36 +48,38 @@ class Player():
                 return True
 
 ## getting cards for use in game
-directory = os.fsencode("Playing Cards/PNG-cards-1.3/")
-cards = []
-for file in os.listdir(directory):
-     filename = os.fsdecode(file)
-     filename = filename.split(".")[0]
-     if "jack" in filename:
-         split = filename.split("_")
-         card = Card(11, split[2], filename)
-         cards.append(card)
-         continue
-     elif "queen" in filename:
-         split = filename.split("_")
-         card = Card(12, split[2], filename)
-         cards.append(card)
-         continue
-     elif "king" in filename:
-         split = filename.split("_")
-         card = Card(13, split[2], filename)
-         cards.append(card)
-         continue
-     elif "ace" in filename:
-         split = filename.split("_")
-         card = Card(1, split[2], filename)
-         cards.append(card)
-         continue
-     else:
-         split = filename.split("_")
-         card = Card(split[0], split[2], filename)
-         cards.append(card)
-         continue
+def createCards():
+    directory = os.fsencode("Playing Cards/PNG-cards-1.3/")
+    cards = []
+    for file in os.listdir(directory):
+         filename = os.fsdecode(file)
+         filename = filename.split(".")[0]
+         if "jack" in filename:
+             split = filename.split("_")
+             card = Card(11, split[2], filename)
+             cards.append(card)
+             continue
+         elif "queen" in filename:
+             split = filename.split("_")
+             card = Card(12, split[2], filename)
+             cards.append(card)
+             continue
+         elif "king" in filename:
+             split = filename.split("_")
+             card = Card(13, split[2], filename)
+             cards.append(card)
+             continue
+         elif "ace" in filename:
+             split = filename.split("_")
+             card = Card(1, split[2], filename)
+             cards.append(card)
+             continue
+         else:
+             split = filename.split("_")
+             card = Card(split[0], split[2], filename)
+             cards.append(card)
+             continue
+    return cards
 
 ## pregame intro
 amountPlrs = 0
@@ -90,6 +92,7 @@ cash = int(input("What is the starting money?: "))
 os.system("cls")
 
 ## pregame requisites
+cards = createCards()
 plrs = []
 dealer = Dealer()
 for i in range(amountPlrs):
@@ -131,7 +134,11 @@ while len(plrs) > 0:
     plr.cash += pot
     pot = 0
     input(plr.name + " won via: "+results[1]+". Their cash is now: "+str(plr.cash))            
-                  
-        
+    roundNum = 1
+    for plr in plrs:
+        plr.plrHand.clear()
+    dealer.hand.clear()
+    cards.clear()
+    cards = createCards()
         
             
