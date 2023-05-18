@@ -103,7 +103,7 @@ os.system("cls")
 roundNum = 1
 pot = 0
 ## gameloop
-while len(plrs) > 0:
+while len(plrs) > 1:
     while roundNum < 5:
         dealer.drawHand(cards, roundNum)
         for plr in plrs:
@@ -133,7 +133,8 @@ while len(plrs) > 0:
             actualWinner = plr
     actualWinner.cash += pot
     pot = 0
-    input(actualWinner.name + " won via: "+results[1]+". Their cash is now: "+str(actualWinner.cash))            
+    input(actualWinner.name + " won via: "+results[1]+". Their cash is now: "+str(actualWinner.cash))
+    os.system("cls")
     roundNum = 1
     for plr in plrs:
         plr.plrHand.clear()

@@ -1,3 +1,32 @@
+def checkStraight(hand, communityHand):
+    nummedCommunityHand = []
+    for card in communityHand:
+        nummedCommunityHand.append(int(card.Number))
+    nummedHand = []
+    for card in hand:
+        nummedHand.append(int(card.Number))
+    totalHand = nummedCommunityHand + nummedHand
+    print(totalHand)
+    totalHand.sort()
+    runLength = 0
+    highCard = 0 
+    for index, i in enumerate(totalHand):
+        if index == len(totalHand) - 1:
+            break
+        if totalHand[index + 1] - totalHand[index] == 1:
+            runLength += 1
+            highCard = i
+        else:
+            runLength = 0
+    if runLength >= 5:
+        return (highCard + 400)
+    else:
+        return 0
+        
+    
+
+
+
 def winningPlay(num):
     print(num)
     if num < 100:
@@ -9,6 +38,10 @@ def winningPlay(num):
     if num < 400 and num > 300:
         return "3 Of A Kind"
     if num < 500 and num > 400:
+        return "Straight"
+    if num < 600 and num > 500:
+        return "Flush"
+    if num < 700 and num > 600:
         return "Full House"
 
 
@@ -38,31 +71,39 @@ def checkDouble(hand, communityHand):
         if value == 3:
             threeKind.append(int(key))
     if threeKind and pairs:
-        return (pairs[0] + threeKind[0] + 400)
+        print("ROADHOUSE")
+        return (pairs[0] + threeKind[0] + 600)
     if threeKind:
+        print("THREE KIND")
         return (threeKind[0] + 300)
     if len(pairs) == 2:
+        print("two pair")
         return (sum(pairs) + 200)
     if len(pairs) == 1:
+        print("pair")
         return (pairs[0] + 100)
     if not pairs and not threeKind:
+        print("high card")
         return 0
         
 
 def pokerMain(hands, communityHand):
     for key, hand in hands.items():
         runningTotal = 0
-        valueToAdd = checkDouble(hand, communityHand)
-        print(key)
-        runningTotal += valueToAdd
+        valueToAdd = checkStraight(hand, communityHand)
+        runningTotal = runningTotal + valueToAdd
         if runningTotal == 0:
-            valueToAdd = addHighCard(hand)
-            runningTotal += valueToAdd
+            valueToAdd = checkDouble(hand, communityHand)
+            runningTotal = runningTotal + valueToAdd
+        ##print(key)
+        valueToAdd = addHighCard(hand)
+        runningTotal = runningTotal + valueToAdd
         hands[key] = runningTotal
-    winnerKey = max(hands)
-    print(winnerKey)
+        ##print(hands[key])
+    winnerKey = max(hands, key=hands.get)
+    ##print(winnerKey)
     winReason = winningPlay(hands[winnerKey])
-    print(winReason)
+    ##print(winReason)
     return(winnerKey, winReason)
     
         
