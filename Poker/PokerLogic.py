@@ -43,6 +43,8 @@ def winningPlay(num):
         return "Flush"
     if num < 700 and num > 600:
         return "Full House"
+    if num < 800 and num > 700:
+        return "4 of a Kind"
 
 
     
@@ -65,26 +67,32 @@ def checkDouble(hand, communityHand):
     print(countedItems)
     pairs = []
     threeKind = []
+    fourKind = []
     for key, value in countedItems.items():
         if value == 2:
             pairs.append(int(key))
         if value == 3:
             threeKind.append(int(key))
-    if threeKind and pairs:
+        if value == 4:
+            fourKind.append(int(key))
+    if threeKind and pairs and not fourKind:
         print("ROADHOUSE")
         return (pairs[0] + threeKind[0] + 600)
-    if threeKind:
+    if threeKind and not fourKind:
         print("THREE KIND")
         return (threeKind[0] + 300)
-    if len(pairs) == 2:
+    if len(pairs) >= 2 and not fourKind:
         print("two pair")
         return (sum(pairs) + 200)
     if len(pairs) == 1:
         print("pair")
         return (pairs[0] + 100)
-    if not pairs and not threeKind:
+    if not pairs and not threeKind and not fourKind:
         print("high card")
         return 0
+    if fourKind:
+        print("Four Kind")
+        return (fourKind[0]+700)
         
 
 def pokerMain(hands, communityHand):
@@ -95,7 +103,7 @@ def pokerMain(hands, communityHand):
         if runningTotal == 0:
             valueToAdd = checkDouble(hand, communityHand)
             runningTotal = runningTotal + valueToAdd
-        ##print(key)
+        print(key)
         valueToAdd = addHighCard(hand)
         runningTotal = runningTotal + valueToAdd
         hands[key] = runningTotal

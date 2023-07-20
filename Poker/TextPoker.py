@@ -49,9 +49,10 @@ class Player():
 
 ## getting cards for use in game
 def createCards():
-    directory = os.fsencode("Playing Cards/PNG-cards-1.3/")
+    currentDir = os.fsencode('Poker\Playing Cards\PNG-cards-1.3')
+    ##directory = os.fsencode("Playing Cards/PNG-cards-1.3/")
     cards = []
-    for file in os.listdir(directory):
+    for file in os.listdir(currentDir):
          filename = os.fsdecode(file)
          filename = filename.split(".")[0]
          if "jack" in filename:
